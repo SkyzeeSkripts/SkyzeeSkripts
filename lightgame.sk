@@ -1,0 +1,82 @@
+on player move:
+    if {game.mode} is "Red Light":
+        loop {game.players::*}:
+            if loop-value is player:
+                execute console command "kill %player%"
+                send title "&cYou were eliminated!" with subtitle "&7You moved during Red Light!" to player
+                remove loop-value from {game.players::*}
+                broadcast "&c%player% &7was eliminated for moving during Red Light!"
+                stop
+
+command /startgame:
+    permission: op
+    trigger:
+        set {game.mode} to "Green Light"
+        delete {game.players::*}
+        loop all players:
+            set {_loc} to location of loop-player
+            if x-coordinate of {_loc} is between 12 and 71:
+                if y-coordinate of {_loc} is between 105 and 83:
+                    if z-coordinate of {_loc} is between 147 and 109:
+                        add loop-player to {game.players::*}
+        if {game.players::*} is empty:
+            broadcast "&cNo players are in the game area."
+            stop
+        broadcast "&aThe game started with &f%size of {game.players::*}% &aplayers!"
+        loop {game.players::*}:
+            send title "&aGreen Light" with subtitle "&7The game started, don't move during Red Light!" to loop-value
+            play sound "minecraft:block.note_block.pling" at loop-value
+            send action bar "&a● Green Light" to loop-value
+            execute console command "fill 15 88 147 15 84 109 air"
+
+command /greenlight:
+    permission: op
+    trigger:
+        if {game.mode} is not set:
+            send "&cThe game hasn't started yet!" to player
+            stop
+        if {game.mode} is "Red Light":
+            set {game.mode} to "Green Light"
+            loop {game.players::*}:
+                send title "&aGreen Light" with subtitle "&7You can move now!" to loop-value
+                play sound "minecraft:block.note_block.pling" at loop-value
+                send action bar "&a● Green Light" to loop-value
+            broadcast "&aThe mode has been changed to &fGreen Light!"
+        else:
+            send "&cThe game is already in Green Light mode!" to player
+
+command /redlight:
+    permission: op
+    trigger:
+        if {game.mode} is not set:
+            send "&cThe game hasn't started yet!" to player
+            stop
+        if {game.mode} is "Green Light":
+            set {game.mode} to "Red Light"
+            loop {game.players::*}:
+                send title "&cRed Light" with subtitle "&7Don't move!" to loop-value
+                play sound "minecraft:block.note_block.harp" at loop-value
+                send action bar "&c● Red Light" to loop-value
+            broadcast "&cThe mode has been changed to &fRed Light!"
+        else:
+            send "&cThe game is already in Red Light mode!" to player
+
+command /stopgame:
+    permission: op
+    trigger:
+        if {game.mode} is not set:
+            send "&cThe game hasn't started yet!" to player
+            stop
+        set {game.mode} to ""
+        clear {game.players::*}
+        send "&cThe game has been stopped and all players have been removed!" to all players
+        loop all players:
+            send title "&cGame Stopped!" to loop-value
+            play sound "minecraft:block.note_block.bass" at loop-value
+            execute console command "fill 15 88 147 15 84 109 barrier"
+
+command /tpalltogame:
+    permission: op
+    trigger:
+        execute console command "execute run teleport @a 14 84 123"
+        send title "&aHello %player%" with subtitle "&fPlease wait for the game to start."
