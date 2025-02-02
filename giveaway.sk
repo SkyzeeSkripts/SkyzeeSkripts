@@ -1,0 +1,18 @@
+command /giveaway:
+    permission: op
+    permission message: "&cYou do not have enough permission"
+    trigger:
+        broadcast "&eThe Giveaway will start in &c10 &eseconds!"
+        wait 5 seconds
+        broadcast "&eThe Giveaway will start in &c5 &eseconds!"
+        wait 1 seconds
+        broadcast "&eThe Giveaway will start in &c4 &eseconds!"
+        wait 1 seconds
+        broadcast "&eThe Giveaway will start in &c3 &eseconds!"
+        wait 1 seconds
+        broadcast "&eThe Giveaway will start in &c2 &eseconds!"
+        wait 1 seconds
+        broadcast "&eThe Giveaway will start in &c1 &esecond!"
+        wait 1 second
+        execute console command "give * iron_ingot 1"
+        broadcast "&eThe giveaway is &cover,&e 1 &fIron ingot &ehas been given to everyone."
