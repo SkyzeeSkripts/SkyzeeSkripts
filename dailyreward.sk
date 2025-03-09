@@ -1,0 +1,10 @@
+on command "/dailyreward":
+    cancel event
+    {%player%.bekleme} is set:
+        difference between {%player%.bekleme} and now is less than a day:
+            message "&eServer &8» &8&l» &7You already claimed your reward."
+            stop trigger
+    execute console command "give %player% diamond 10"
+    set {%player%.bekleme} to now
+    send "&eServer &8» &7Succesful claimed your reward!" to player
+    stop
