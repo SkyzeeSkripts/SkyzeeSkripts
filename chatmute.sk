@@ -1,0 +1,24 @@
+command <text>:
+    permission: op
+	permission message: "&cYou dont have enough permission!"
+    trigger:
+        if arg 1 is "mute":
+            set {chat.talk} to true
+		    broadcast "&l&m---------------------------"
+			broadcast "                               "
+			broadcast "&c&l! &7Chat &4disabled &fby the &e%player%&7.""
+			broadcast "                               "
+			broadcast "&l&m---------------------------"
+            if arg 1 is "unmute":
+			    set {chat.talk} to false
+            broadcast "&l&m---------------------------"
+			broadcast "                               "
+			broadcast "&c&l! &7Chat &eenabled &fby the &e%player%&7.""
+			broadcast "                               "
+			broadcast "&l&m---------------------------"
+
+on chat:
+    if {chat.talk} is true:
+        if player doesn't have permission "chat.talk":
+        cancel event
+        send "&7Chat &4disabled &7you can't talk!"
