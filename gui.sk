@@ -1,0 +1,51 @@
+options:
+    furnace_data: {}
+    anvil_data: {}
+    crafting_data: {}
+    smithing_data: {}
+
+command /furnace:
+    trigger:
+        open virtual furnace to player
+        set {_furnace} to last opened inventory
+        if {furnace_data::%player's uuid%} is set:
+            set inventory of {_furnace} to {furnace_data::%player's uuid%}
+        else:
+            set {furnace_data::%player's uuid%} to inventory of {_furnace}
+
+command /anvil:
+    trigger:
+        open virtual anvil to player
+        set {_anvil} to last opened inventory
+        if {anvil_data::%player's uuid%} is set:
+            set inventory of {_anvil} to {anvil_data::%player's uuid%}
+        else:
+            set {anvil_data::%player's uuid%} to inventory of {_anvil}
+
+command /craft:
+    trigger:
+        open virtual crafting table to player
+        set {_crafting} to last opened inventory
+        if {crafting_data::%player's uuid%} is set:
+            set inventory of {_crafting} to {crafting_data::%player's uuid%}
+        else:
+            set {crafting_data::%player's uuid%} to inventory of {_crafting}
+
+command /smith:
+    trigger:
+        open virtual smithing table to player
+        set {_smithing} to last opened inventory
+        if {smithing_data::%player's uuid%} is set:
+            set inventory of {_smithing} to {smithing_data::%player's uuid%}
+        else:
+            set {smithing_data::%player's uuid%} to inventory of {_smithing}
+
+on inventory close:
+    if event-inventory is a virtual furnace:
+        set {furnace_data::%player's uuid%} to inventory of event-inventory
+    else if event-inventory is a virtual anvil:
+        set {anvil_data::%player's uuid%} to inventory of event-inventory
+    else if event-inventory is a virtual crafting table:
+        set {crafting_data::%player's uuid%} to inventory of event-inventory
+    else if event-inventory is a virtual smithing table:
+        set {smithing_data::%player's uuid%} to inventory of event-inventory
