@@ -1,0 +1,10 @@
+command /chatdelete:
+    permission: op
+	permission message: "&cYou dont have enough permission!"
+    trigger:
+	    loop 200 times:
+		    broadcast "&l&m-------------------------------"
+			broadcast "                                   "
+			broadcast "&c&l! &7Chat &cdeleted &7by the &e%player%&7."
+			broadcast "                                   "
+			broadcast "&l&m-------------------------------"
