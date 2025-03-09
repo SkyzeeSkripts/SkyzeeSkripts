@@ -1,0 +1,28 @@
+command /giverank <player> <text> <text>:
+    permission: op
+    trigger:
+        if arg-2 is not set:
+            send "&cKullanım: /giverank <oyuncu> <rank> <süre>"
+            stop
+        set {_player} to arg-1
+        set {_rank} to arg-2
+        set {_time} to arg-3
+        set {_time_seconds} to 0
+
+        # Süreyi saniyeye çevir
+        if {_time} ends with "s":
+            set {_time_seconds} to (substring {_time} from 1 to (length of {_time} - 1)) parsed as number
+        else if {_time} ends with "min":
+            set {_time_seconds} to (substring {_time} from 1 to (length of {_time} - 3)) parsed as number * 60
+        else if {_time} ends with "h":
+            set {_time_seconds} to (substring {_time} from 1 to (length of {_time} - 1)) parsed as number * 3600
+        else if {_time} ends with "d":
+            set {_time_seconds} to (substring {_time} from 1 to (length of {_time} - 1)) parsed as number * 86400
+        else:
+            send "&cGeçersiz süre formatı! Örnek: 1s, 2min, 3h, 4d"
+            stop
+
+        # Rankı ver
+        execute console command "lp user %{_player}% parent addtemp %{_rank}% %{_time_seconds}%s"
+        send "&a%{_player}% oyuncusuna %{_rank}% rankı %{_time}% süreyle verildi!" to sender
+        send "&aYou claimed %{_rank}% for %{_time}%." to {_player}
